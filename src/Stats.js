@@ -3,16 +3,41 @@ import './Stats.css';
 import axios from 'axios';
 import StatsRow from './StatsRow';
 import './StatsRow.css'
+import { db } from './Firebase'
 
 const TOKEN = 'c8t8niiad3ib2st17mg0';
 const BASE_URL = 'https://finnhub.io/api/v1/quote';
 
+
+
+const testData = []; 
+
 function Stats() {
-  // const finnhub = require('finnhub');
-  // const api_key = finnhub.ApiClient.instance.authentications['api_key'];
-  // api_key.apiKey = "c8t8niiad3ib2st17mg0"
-  // const finnhubClient = new finnhub.DefaultApi()
-  const [stockData, setStockData] = useState([]) 
+  const [ stocksData, setStocksData] = useState([]) 
+  const [ myStocks, setMyStocks] = useState([])
+
+  const getMyStocks = () => {
+    db
+    .collection('myStocks')
+    .onSnapshot(snapshot => {
+      let promises = [];
+      let tempData = []
+      snapshot.docs.map((doc) => {
+          promises.push(getStocksData(doc.data().ticker)
+        .then(res => {
+          tempData.push({
+            id: doc.id,
+            data: doc.data(),
+            info: res.data
+          })
+        }) 
+      )})
+      Promise.all(promises).then(() => {
+        console.log(tempData);
+        setMyStocks(tempData);
+      })
+    })
+  }
 
   const getStocksData = (stock) => {
     return axios
@@ -23,59 +48,58 @@ function Stats() {
   };
 
   useEffect(() => {
-    let tempStocksData = []
     const stocksList = ['AAPL', 'MSFT', 'TSLA', 'FB', 'BABA', 'UBER', 'DIS', 'SBUX'];
+    
+    getMyStocks();
     let promises = [];
     stocksList.map((stock) => {
       promises.push(
         getStocksData(stock)
-        .then((response) => {
-
-          tempStocksData.push({
+        .then((res) => {
+          testData.push({
             name: stock,
-            ...response.data
+            ...res.data
           });
         })
       )
     });
     
     Promise.all(promises).then(() => {
-      setStockData(tempStocksData);
-      console.log(tempStocksData)
+      setStocksData(testData);
+      console.log(testData)
     })
 
   }, [])
 
-  console.log(stockData)
 
   return (
     <div className='stats'>
       <div className='stats__container'>
-        <div className='stats__header'>
+        <div className='stats__header '>
           <p>Stocks</p>
         </div>
         <div className='stats__content'>
           <div className='stats__rows'>
           {/* for current stocks */}
-          {/* {stockData.map((stock) => (
-            <StatsRow
-            key={stock.data.ticker}
-            name={stock.data.ticker}
-            openPrice={stock.info.o}
-            volume={stock.data.share}
-            price={stock.info.c}
-            /> */}
-            {/* ))} */}
+          {myStocks.map((stock) => (
+              <StatsRow
+                key={stock.data.ticker}
+                name={stock.data.ticker}
+                openPrice={stock.info.o}
+                shares={stock.data.shares}
+                price={stock.info.c}
+              />
+            ))}
           </div>
         </div>
-        <div className='stats__header'>
+        <div className='stats__header stats__lists'>
           <p>lists</p>
         </div>
         <div className='stats__content'>
           <div className='stats__rows'>
           {/*  stocks we can buy*/}
           
-          {stockData.map((stock) => (
+          {stocksData.map((stock) => (
             <StatsRow
               key={stock.name}
               name={stock.name}
@@ -92,4 +116,4 @@ function Stats() {
   )
 }
 
-export default Stats
+export default Stats;
