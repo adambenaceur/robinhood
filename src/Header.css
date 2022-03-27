@@ -38,6 +38,7 @@
 .header__menuItems {
     margin-left: 48px;
     margin-right: 48px;
+    display: flex;
 }
 
 
@@ -46,6 +47,8 @@
     font-weight:bold;
     text-decoration:none;
     padding: 0 10px;
+    display:flex;
+    flex-wrap: wrap;
 } 
 
 .header__menuItems a:hover{

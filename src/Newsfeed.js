@@ -46,12 +46,16 @@ function Newsfeed() {
             <div className='newsfeed__popular__lists__badges'>
               {popularTopics.map((topic) => (
                 <Chip
-                  className='topic__badge'
+                  className='chip__topic__badge'
+                  
                   variant='outlined'
-                  label={topic}
-                  avatar={<Avatar
+                  avatar={
+                  <Avatar
+                    className="chip__avatar"
                     src={`https://avatars.dicebear.com/api/human/${topic}.svg`}
-                  />}
+                    />
+                  }
+                  label={topic}
                 />
               ))}
              </div>
