@@ -12,7 +12,6 @@ const popularTopics = [
   'Cannabis',
   'Healthcare Supplies',
   'Index ETFs',
-  'Technology',
   'China',
   'Pharma'
 ];
@@ -51,7 +50,7 @@ function Newsfeed() {
                   variant='outlined'
                   label={topic}
                   avatar={<Avatar
-                    src={''}
+                    src={`https://avatars.dicebear.com/api/human/${topic}.svg`}
                   />}
                 />
               ))}
