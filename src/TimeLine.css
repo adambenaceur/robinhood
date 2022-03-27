@@ -17,3 +17,8 @@
 .timeline__button:hover {
     color: #5AC53B
 }
+
+.timeline__button:active {
+    color: #5AC53B;
+    border-bottom: 1px solid #5AC53B;
+}
