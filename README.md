@@ -1,4 +1,4 @@
-# robinhood
+# stock market app
 
 stock market app for viewing real time stock data. Portfolio holder for all your stocks.
 
