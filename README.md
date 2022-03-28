@@ -15,6 +15,6 @@ stock market app for viewing real time stock data. Portfolio holder for all your
   - Real time portfolio data progress
   - Search functionality that can search any stock on request
   - Red and green colors for % change in stocks
-  - 
+ 
 
 
